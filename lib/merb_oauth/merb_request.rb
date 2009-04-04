@@ -16,7 +16,7 @@ module OAuth::RequestProxy
     # ==== Returns
     # <String> specifying the request uri without any query params
     def uri
-      uri = URI.parse(request.protocol + request.host + request.path)
+      uri = URI.parse(request.protocol + "://" + request.host + request.path)
       uri.query = nil
       uri.to_s
     end
