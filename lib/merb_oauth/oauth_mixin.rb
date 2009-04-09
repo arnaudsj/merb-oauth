@@ -55,7 +55,13 @@ module OAuthMixin
   end
   
   def current_application
-    @current_application ||= current_token.application
+    begin
+      @current_application ||= current_token.application      
+    rescue Exception => e
+      @current_application = nil
+    end
+    
+
   end
   
   def current_application=(new_current_application)
@@ -122,6 +128,8 @@ module OAuthMixin
       signature = OAuth::Signature.build(request) do |token, consumer_key|
         self.current_application = find_application_by_key(consumer_key)
         self.current_token = find_token(token)
+
+        puts "#{self.current_application} , #{self.current_token}"
 
         token_secret  = self.current_token ? self.current_token.secret : nil
         app_secret    = self.current_application ? self.current_application.secret : nil

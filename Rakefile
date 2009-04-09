@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rake/gempackagetask'
+require 'spec/rake/spectask'
 
 require 'merb-core'
 require 'merb-core/tasks/merb'
@@ -49,3 +50,10 @@ task :gemspec do
     file.puts spec.to_ruby
   end
 end
+
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.spec_files = FileList['*_spec.rb']
+  #t.options = '-v'
+end
+
+task :default  => :spec

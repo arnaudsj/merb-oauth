@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'spec'
 $TESTING=true
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
 require 'merb-core'
@@ -13,14 +14,12 @@ Spec::Runner.configure do |config|
   config.mock_with :mocha
 end
 
-Merb::Controller.send :include, OAuthMixin
-
 Merb::Config.use { |c|
   c[:framework]           = {},
   c[:session_store]       = 'none',
-  c[:exception_details]   = true
+  c[:exception_details]   = true,
+  c[:log_level]           = :debug,
+  c[:log_stream]          = STDOUT
 }
 
-def (logger = Logger.new(STDOUT)).flush; end
-
-Merb.logger = logger
+Merb::Controller.send :include, OAuthMixin
